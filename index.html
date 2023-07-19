@@ -1,0 +1,94 @@
+<!DOCTYPE HTML>
+<hmtl lang="pl">
+
+<head>
+<meta charset="utf-8"/>
+<title="Piłkołapacz - gra"/>
+<meta name="description" content="Jak masz nudne życie to zagraj w to coś"/>
+
+</head>
+
+<body style="font-family: Verdana; margin: 80px; font-size: 20px; color: white; background-color: black">
+
+<h1 style="text-align: center;">Piłkołapacz</h1>
+Ahoj!
+<br> Co powiesz na <i>świetną</i> grę "Piłkołapacz"? <br>
+Nie jest trudna. Po prostu ruszaj piłkołapaczem w górę i w dół za pomocą strzałek na klawiaturze. Za każde złapanie piłki otrzymujesz punkt. Gdy Ci się nie uda, gra się skończy. Powodzenia! <br> <br>
+
+<canvas id="boisko" width="600px" height="330px" style="background-color: #00dfdd;">
+gra
+
+</canvas> <br>
+
+<button onclick = "Start()">
+Start!
+</button>
+
+<script type="text/javascript">
+	var plansza = document.getElementById("boisko");
+	var rysowanie = plansza.getContext("2d");
+	
+	var x_pilki = 583;
+	var y_pilki = 165;
+	var x_lapacza = 40;
+	var y_lapacza = 140;
+	var strona = 1;
+	var gora = false;
+	var dol = false;
+	
+	document.addEventListener("keydown", klawisz, false);
+	document.addEventListener("keyup", nieklawisz, false);
+	
+	function klawisz(zdarzenie)
+	{
+		if (zdarzenie.key=="ArrowUp") gora = true;
+		if (zdarzenie.key=="ArrowDown") dol = true;
+	}
+	function nieklawisz(zdarzenie)
+	{
+		if (zdarzenie.key=="ArrowUp") gora = false;
+		if (zdarzenie.key=="ArrowDown") dol = false;
+	}
+	
+function animacja()
+{
+	if (x_pilki-11>55)
+	{
+		rysowanie.clearRect(0, 0, 600, 330);
+		function lapacz()
+		{
+			rysowanie.beginPath();
+			rysowanie.fillStyle = "#006600";
+			rysowanie.rect(x_lapacza, y_lapacza, 15, 50);
+			rysowanie.fill();
+			rysowanie.closePath();
+		}
+		lapacz();
+
+		function pilka()
+		{	
+			rysowanie.beginPath();
+			rysowanie.fillStyle = "black";
+			rysowanie.arc(x_pilki, y_pilki, 11, 0, 2*Math.PI);
+			rysowanie.fill();
+			rysowanie.closePath();
+		}
+		pilka();
+		x_pilki-=1;
+		y_pilki+=strona;
+		if (y_pilki+11==330)
+		{
+			strona = -1 * strona;
+		}
+		if (y_pilki-11==0) strona = -1 * strona;
+		if (gora==true && y_lapacza>0) y_lapacza--;
+		if (dol==true && y_lapacza+50<boisko.height) y_lapacza++; 
+	}
+
+}
+setInterval(animacja, 10);
+	
+</script>
+
+</body>
+</html>
